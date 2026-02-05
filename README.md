@@ -1,6 +1,16 @@
 # Job & Networking Portal 🚀
 
+> **Built for RizeOS Core Team Internship Assessment**
+
 A full-stack Web3-enabled job and networking platform inspired by LinkedIn, Upwork, and AngelList, featuring AI-powered job matching, blockchain payments, and social networking capabilities.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![React](https://img.shields.io/badge/React-18.2-blue)](https://reactjs.org/)
+[![Go](https://img.shields.io/badge/Go-1.21-blue)](https://golang.org/)
+[![Python](https://img.shields.io/badge/Python-3.9-blue)](https://python.org/)
+[![Solana](https://img.shields.io/badge/Blockchain-Solana-purple)](https://solana.com/)
+
+[🚀 Quick Start](QUICKSTART.md) | [📚 API Docs](API.md) | [🔧 Deployment](DEPLOYMENT.md) | [🤝 Contributing](CONTRIBUTING.md)
 
 ## 🌟 Features
 

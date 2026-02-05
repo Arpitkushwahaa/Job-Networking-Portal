@@ -266,8 +266,8 @@ MIT License
 
 ## 📧 Contact
 
-For questions or feedback, please reach out to [your-email@example.com]
+For questions or feedback, please reach out to [kushwahaarpit360@gmail.com]
 
 ---
 
-**Built with ❤️ for RizeOS**
+**Built with ❤️ by Arpit Kushwaha*

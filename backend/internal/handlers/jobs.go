@@ -39,7 +39,7 @@ func GetJobs(c *gin.Context) {
 	}
 
 	// Pagination
-	opts := options.Find().SetSort(bson.D{{Key: "created_at", Value: -1}})
+	opts := options.Find().SetSort(bson.D{primitive.E{Key: "created_at", Value: -1}})
 	if limit := c.Query("limit"); limit != "" {
 		opts.SetLimit(10)
 	}

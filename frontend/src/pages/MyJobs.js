@@ -18,7 +18,7 @@ const MyJobs = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/jobs/my-jobs`,
+        `${import.meta.env.VITE_API_URL}/api/jobs/my-jobs`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -40,7 +40,7 @@ const MyJobs = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/jobs/${jobId}`,
+        `${import.meta.env.VITE_API_URL}/api/jobs/${jobId}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }

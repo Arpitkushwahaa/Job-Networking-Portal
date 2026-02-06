@@ -17,7 +17,7 @@ export const WalletProvider = ({ children }) => {
   const [connecting, setConnecting] = useState(false);
   const [balance, setBalance] = useState(0);
 
-  const NETWORK = process.env.REACT_APP_SOLANA_NETWORK || 'devnet';
+  const NETWORK = import.meta.env.VITE_SOLANA_NETWORK || 'devnet';
   const connection = new Connection(clusterApiUrl(NETWORK), 'confirmed');
 
   useEffect(() => {
@@ -138,8 +138,8 @@ export const WalletProvider = ({ children }) => {
   };
 
   const payPlatformFee = async () => {
-    const adminWallet = process.env.REACT_APP_ADMIN_WALLET;
-    const platformFee = parseFloat(process.env.REACT_APP_PLATFORM_FEE || '0.0001');
+    const adminWallet = import.meta.env.VITE_ADMIN_WALLET;
+    const platformFee = parseFloat(import.meta.env.VITE_PLATFORM_FEE || '0.0001');
 
     if (!adminWallet) {
       return { success: false, error: 'Admin wallet not configured' };

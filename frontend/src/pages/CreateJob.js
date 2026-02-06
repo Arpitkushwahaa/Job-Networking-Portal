@@ -23,8 +23,8 @@ const CreateJob = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
-  const PLATFORM_FEE = process.env.REACT_APP_PLATFORM_FEE || '0.0001';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+  const PLATFORM_FEE = import.meta.env.VITE_PLATFORM_FEE || '0.0001';
 
   const handleChange = (e) => {
     setFormData({

@@ -8,6 +8,7 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    role: 'candidate', // default to candidate
     bio: '',
     linkedinUrl: ''
   });
@@ -139,6 +140,52 @@ const Register = () => {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
                   placeholder="••••••••"
                 />
+              </div>
+            </div>
+
+            {/* Role Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                I am a: *
+              </label>
+              <div className="grid md:grid-cols-2 gap-4">
+                <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition ${
+                  formData.role === 'candidate' 
+                    ? 'border-primary-500 bg-primary-50' 
+                    : 'border-gray-300 hover:border-primary-300'
+                }`}>
+                  <input
+                    type="radio"
+                    name="role"
+                    value="candidate"
+                    checked={formData.role === 'candidate'}
+                    onChange={handleChange}
+                    className="w-4 h-4 text-primary-600"
+                  />
+                  <div className="ml-3">
+                    <p className="font-semibold text-gray-900">Job Seeker</p>
+                    <p className="text-sm text-gray-600">Looking for opportunities</p>
+                  </div>
+                </label>
+
+                <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition ${
+                  formData.role === 'recruiter' 
+                    ? 'border-primary-500 bg-primary-50' 
+                    : 'border-gray-300 hover:border-primary-300'
+                }`}>
+                  <input
+                    type="radio"
+                    name="role"
+                    value="recruiter"
+                    checked={formData.role === 'recruiter'}
+                    onChange={handleChange}
+                    className="w-4 h-4 text-primary-600"
+                  />
+                  <div className="ml-3">
+                    <p className="font-semibold text-gray-900">Recruiter</p>
+                    <p className="text-sm text-gray-600">Hiring talented professionals</p>
+                  </div>
+                </label>
               </div>
             </div>
 

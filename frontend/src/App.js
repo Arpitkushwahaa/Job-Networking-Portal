@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import JobFeed from './pages/JobFeed';
 import JobDetails from './pages/JobDetails';
+import JobDetail from './pages/JobDetail';
 import CreateJob from './pages/CreateJob';
 import MyJobs from './pages/MyJobs';
 import Applications from './pages/Applications';
@@ -50,7 +51,12 @@ function App() {
               } />
               <Route path="/jobs/:id" element={
                 <PrivateRoute>
-                  <JobDetails />
+                  <JobDetail />
+                </PrivateRoute>
+              } />
+              <Route path="/job/:id" element={
+                <PrivateRoute>
+                  <JobDetail />
                 </PrivateRoute>
               } />
               <Route path="/create-job" element={
@@ -63,7 +69,7 @@ function App() {
                   <MyJobs />
                 </PrivateRoute>
               } />
-              <Route path="/applications" element={
+              <Route path="/job/:jobId/applications" element={
                 <PrivateRoute>
                   <Applications />
                 </PrivateRoute>

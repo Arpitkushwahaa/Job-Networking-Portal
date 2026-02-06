@@ -37,6 +37,11 @@ const CreateJob = () => {
     e.preventDefault();
     setError('');
 
+    if (!user || user.role !== 'recruiter') {
+      setError('Only recruiters can post jobs. Please register as a recruiter.');
+      return;
+    }
+
     if (!connected) {
       setError('Please connect your wallet first');
       return;

@@ -80,6 +80,7 @@ func main() {
 			jobs.PUT("/:id", middleware.AuthMiddleware(), handlers.UpdateJob)
 			jobs.DELETE("/:id", middleware.AuthMiddleware(), handlers.DeleteJob)
 			jobs.POST("/:id/apply", middleware.AuthMiddleware(), handlers.ApplyToJob)
+			jobs.GET("/:id/applications", middleware.AuthMiddleware(), handlers.GetJobApplications)
 		}
 
 		// Payment routes

@@ -330,3 +330,75 @@ func ApplyToJob(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, application)
 }
+
+// GetJobApplications returns all applications for a specific job (recruiter only)
+func GetJobApplications(c *gin.Context) {
+	jobID := c.Param("id")
+	userID := c.GetString("userId")
+
+	jobObjectID, err := primitive.ObjectIDFromHex(jobID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid job ID"})
+		return
+	}
+
+	userObjectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	// Check if user owns this job
+	jobCollection := database.GetCollection("jobs")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var job models.Job
+	err = jobCollection.FindOne(ctx, bson.M{"_id": jobObjectID}).Decode(&job)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Job not found"})
+		return
+	}
+
+	if job.PostedBy != userObjectID {
+		c.JSON(http.StatusForbidden, gin.H{"error": "You can only view applications for your own jobs"})
+		return
+	}
+
+	// Get all applications for this job
+	appCollection := database.GetCollection("applications")
+	cursor, err := appCollection.Find(ctx, bson.M{"job_id": jobObjectID})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch applications"})
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var applications []models.Application
+	if err = cursor.All(ctx, &applications); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode applications"})
+		return
+	}
+
+	// Fetch applicant details for each application
+	type ApplicationWithUser struct {
+		models.Application
+		Applicant models.User `json:"applicant"`
+	}
+
+	var applicationsWithUsers []ApplicationWithUser
+	userCollection := database.GetCollection("users")
+
+	for _, app := range applications {
+		var applicant models.User
+		err := userCollection.FindOne(ctx, bson.M{"_id": app.UserID}).Decode(&applicant)
+		if err == nil {
+			applicationsWithUsers = append(applicationsWithUsers, ApplicationWithUser{
+				Application: app,
+				Applicant:   applicant,
+			})
+		}
+	}
+
+	c.JSON(http.StatusOK, applicationsWithUsers)
+}

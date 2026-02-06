@@ -12,6 +12,7 @@ type User struct {
 	Name          string             `json:"name" bson:"name"`
 	Email         string             `json:"email" bson:"email"`
 	Password      string             `json:"-" bson:"password"`
+	Role          string             `json:"role" bson:"role"` // "candidate" or "recruiter"
 	Bio           string             `json:"bio" bson:"bio"`
 	LinkedinURL   string             `json:"linkedinUrl" bson:"linkedin_url"`
 	Skills        []string           `json:"skills" bson:"skills"`
@@ -71,6 +72,7 @@ type RegisterRequest struct {
 	Name        string `json:"name" binding:"required"`
 	Email       string `json:"email" binding:"required,email"`
 	Password    string `json:"password" binding:"required,min=6"`
+	Role        string `json:"role" binding:"required"` // "candidate" or "recruiter"
 	Bio         string `json:"bio"`
 	LinkedinURL string `json:"linkedinUrl"`
 }

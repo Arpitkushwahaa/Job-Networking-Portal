@@ -54,6 +54,7 @@ func Register(c *gin.Context) {
 		Name:        req.Name,
 		Email:       req.Email,
 		Password:    string(hashedPassword),
+		Role:        req.Role, // "candidate" or "recruiter"
 		Bio:         req.Bio,
 		LinkedinURL: req.LinkedinURL,
 		Skills:      []string{},

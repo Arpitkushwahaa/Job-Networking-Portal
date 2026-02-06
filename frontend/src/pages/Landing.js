@@ -1,9 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Landing = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  // Debug logging
+  React.useEffect(() => {
+    console.log('Landing - Auth State:', { isAuthenticated, user: user?.name, loading });
+  }, [isAuthenticated, user, loading]);
 
   const features = [
     {
@@ -42,8 +48,8 @@ const Landing = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary-600 via-purple-600 to-secondary-600 text-white py-20">
-        <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 bg-black opacity-10 pointer-events-none"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
               Welcome to the Future of
@@ -52,25 +58,27 @@ const Landing = () => {
             <p className="text-xl md:text-2xl mb-8 text-gray-100 max-w-3xl mx-auto animate-slide-up">
               Connect with opportunities, build your network, and grow your career with AI-powered matching and Web3 technology
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up">
-              {isAuthenticated ? (
-                <Link
-                  to="/dashboard"
-                  className="px-8 py-4 bg-white text-primary-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-lg"
-                >
-                  Go to Dashboard
-                </Link>
-              ) : (
+            <div className="flex flex-col sm:flex-row justify-center gap-4 animate-slide-up relative z-20">
+              <button
+                onClick={() => {
+                  console.log('Dashboard button clicked, navigating...');
+                  navigate('/dashboard');
+                }}
+                className="px-8 py-4 bg-white text-primary-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-lg cursor-pointer relative z-30"
+              >
+                {isAuthenticated ? 'Go to Dashboard' : 'View Dashboard'}
+              </button>
+              {!isAuthenticated && (
                 <>
                   <Link
                     to="/register"
-                    className="px-8 py-4 bg-white text-primary-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-lg"
+                    className="px-8 py-4 bg-white text-primary-600 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-lg relative z-30"
                   >
                     Get Started Free
                   </Link>
                   <Link
                     to="/login"
-                    className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white hover:text-primary-600 transition"
+                    className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white hover:text-primary-600 transition relative z-30"
                   >
                     Sign In
                   </Link>
@@ -81,32 +89,37 @@ const Landing = () => {
         </div>
         
         {/* Animated Background Elements */}
-        <div className="absolute bottom-0 left-0 right-0">
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none z-0">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="rgb(249, 250, 251)"/>
           </svg>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 bg-gray-50">
+      {/* Key Benefits Section */}
+      <section className="py-16 bg-gradient-to-r from-blue-50 to-purple-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-bold text-primary-600 mb-2">10K+</div>
-              <div className="text-gray-600">Active Users</div>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-4">
+                <span className="text-3xl">🚀</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Get Hired Faster</h3>
+              <p className="text-gray-600">AI-powered job matching connects you with opportunities that perfectly align with your skills and career goals</p>
             </div>
-            <div>
-              <div className="text-4xl font-bold text-primary-600 mb-2">5K+</div>
-              <div className="text-gray-600">Job Listings</div>
+            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center mb-4">
+                <span className="text-3xl">🔒</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Secure & Transparent</h3>
+              <p className="text-gray-600">Blockchain-powered payments ensure every transaction is secure, transparent, and verifiable on-chain</p>
             </div>
-            <div>
-              <div className="text-4xl font-bold text-primary-600 mb-2">500+</div>
-              <div className="text-gray-600">Companies</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-primary-600 mb-2">95%</div>
-              <div className="text-gray-600">Success Rate</div>
+            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mb-4">
+                <span className="text-3xl">⚡</span>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Instant Connections</h3>
+              <p className="text-gray-600">Connect with recruiters, hiring managers, and industry professionals in real-time with our networking platform</p>
             </div>
           </div>
         </div>
@@ -210,7 +223,7 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-white font-bold text-lg mb-4">Job Portal</h3>
+              <h3 className="text-white font-bold text-lg mb-4">Job Nest</h3>
               <p className="text-sm">
                 Connecting talent with opportunity through AI and blockchain technology
               </p>
@@ -241,7 +254,7 @@ const Landing = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-            <p>&copy; 2026 Job & Networking Portal. Built with ❤️ for RizeOS. All rights reserved.</p>
+            <p>&copy; 2026 Job & Networking Portal.All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -30,7 +30,7 @@ const Navbar = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">J</span>
               </div>
-              <span className="text-xl font-bold gradient-text">JobPortal</span>
+              <span className="text-xl font-bold gradient-text">JobNest</span>
             </Link>
           </div>
 

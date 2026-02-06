@@ -25,15 +25,20 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const [jobsRes, statsRes] = await Promise.all([
-        axios.get(`${API_URL}/api/jobs?limit=6`),
-        axios.get(`${API_URL}/api/users/stats`)
-      ]);
+      const token = localStorage.getItem('token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      
+      // Fetch jobs - this endpoint doesn't require auth
+      const jobsRes = await axios.get(`${API_URL}/api/jobs?limit=6`).catch(() => ({ data: { jobs: [] } }));
+      
+      // Fetch user stats - optional, set defaults on error
+      const statsRes = await axios.get(`${API_URL}/api/users/stats`, { headers }).catch(() => ({ data: null }));
 
-      setRecentJobs(jobsRes.data.jobs || []);
+      setRecentJobs(Array.isArray(jobsRes.data?.jobs) ? jobsRes.data.jobs : (Array.isArray(jobsRes.data) ? jobsRes.data : []));
       setStats(statsRes.data || stats);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
+      setRecentJobs([]);
     } finally {
       setLoading(false);
     }

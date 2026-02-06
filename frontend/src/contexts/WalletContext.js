@@ -75,7 +75,10 @@ export const WalletProvider = ({ children }) => {
       setConnecting(false);
       return { success: true, publicKey };
     } catch (error) {
-      console.error('Error connecting wallet:', error);
+      // Don't log user rejection errors (code 4001)
+      if (error.code !== 4001) {
+        console.error('Error connecting wallet:', error);
+      }
       setConnecting(false);
       return { success: false, error: error.message };
     }

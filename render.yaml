@@ -5,7 +5,7 @@ services:
     runtime: go
     region: oregon
     rootDir: backend
-    buildCommand: go build -o main .
+    buildCommand: go build -o main ./cmd
     startCommand: ./main
     envVars:
       - key: PORT

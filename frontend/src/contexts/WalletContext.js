@@ -32,7 +32,12 @@ export const WalletProvider = ({ children }) => {
           await fetchBalance(response.publicKey);
         }
       } catch (error) {
-        console.log('Wallet not connected:', error);
+        // Silently handle wallet connection errors on page load
+        // User can manually connect wallet if needed
+        if (error.code !== 4001) {
+          // Only log non-user-rejection errors
+          console.debug('Auto-connect skipped:', error.message);
+        }
       }
     };
 

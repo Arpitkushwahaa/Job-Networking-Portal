@@ -33,7 +33,8 @@ type Job struct {
 	Skills           []string           `json:"skills" bson:"skills"`
 	Requirements     string             `json:"requirements" bson:"requirements"`
 	PostedBy         primitive.ObjectID `json:"postedBy" bson:"posted_by"`
-	WalletAddress    string             `json:"walletAddress" bson:"wallet_address"`
+	WalletAddress    string             `json:"walletAddress,omitempty" bson:"wallet_address,omitempty"`
+	PaymentMethod    string             `json:"paymentMethod" bson:"payment_method"` // "solana" or "razorpay"
 	PaymentSignature string             `json:"paymentSignature" bson:"payment_signature"`
 	ApplicantsCount  int                `json:"applicantsCount" bson:"applicants_count"`
 	Status           string             `json:"status" bson:"status"` // active, closed

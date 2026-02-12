@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { WalletProvider } from './contexts/WalletContext';
+import { RazorpayProvider } from './contexts/RazorpayContext';
 
 // Pages
 import Landing from './pages/Landing';
@@ -25,9 +26,10 @@ function App() {
     <Router>
       <AuthProvider>
         <WalletProvider>
-          <div className="App min-h-screen bg-gray-50">
-            <Navbar />
-            <Routes>
+          <RazorpayProvider>
+            <div className="App min-h-screen bg-gray-50">
+              <Navbar />
+              <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Landing />} />
               <Route path="/login" element={<Login />} />
@@ -78,7 +80,8 @@ function App() {
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-          </div>
+            </div>
+          </RazorpayProvider>
         </WalletProvider>
       </AuthProvider>
     </Router>

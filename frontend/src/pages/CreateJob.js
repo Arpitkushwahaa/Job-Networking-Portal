@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useWallet } from '../contexts/WalletContext';
+import { useRazorpay } from '../contexts/RazorpayContext';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
@@ -18,8 +19,10 @@ const CreateJob = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [paymentStep, setPaymentStep] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('razorpay'); // default to Razorpay
 
   const { wallet, connected, payPlatformFee } = useWallet();
+  const { initiatePayment: razorpayPay } = useRazorpay();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -42,8 +45,9 @@ const CreateJob = () => {
       return;
     }
 
-    if (!connected) {
-      setError('Please connect your wallet first');
+    // Check wallet connection only for Solana
+    if (paymentMethod === 'solana' && !connected) {
+      setError('Please connect your Phantom wallet first');
       return;
     }
 
@@ -55,8 +59,14 @@ const CreateJob = () => {
     setError('');
 
     try {
-      // Pay platform fee
-      const paymentResult = await payPlatformFee();
+      let paymentResult;
+
+      // Process payment based on selected method
+      if (paymentMethod === 'razorpay') {
+        paymentResult = await razorpayPay();
+      } else {
+        paymentResult = await payPlatformFee();
+      }
       
       if (!paymentResult.success) {
         setError(`Payment failed: ${paymentResult.error}`);
@@ -68,11 +78,17 @@ const CreateJob = () => {
       const jobData = {
         ...formData,
         skills: formData.skills.split(',').map(s => s.trim()),
-        paymentSignature: paymentResult.signature,
-        walletAddress: wallet
+        paymentMethod: paymentMethod,
+        paymentSignature: paymentMethod === 'razorpay' ? paymentResult.paymentId : paymentResult.signature,
+        walletAddress: paymentMethod === 'solana' ? wallet : undefined
       };
 
-      const response = await axios.post(`${API_URL}/api/jobs`, jobData);
+      const token = localStorage.getItem('token');
+      const response = await axios.post(`${API_URL}/api/jobs`, jobData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       
       if (response.data) {
         navigate('/my-jobs');
@@ -234,6 +250,60 @@ const CreateJob = () => {
                 />
               </div>
 
+              {/* Payment Method Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Select Payment Method *
+                </label>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* Razorpay Option */}
+                  <div
+                    onClick={() => setPaymentMethod('razorpay')}
+                    className={`border-2 rounded-lg p-4 cursor-pointer transition ${
+                      paymentMethod === 'razorpay'
+                        ? 'border-primary-600 bg-primary-50'
+                        : 'border-gray-300 hover:border-primary-400'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-gray-900">Razorpay</h4>
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        checked={paymentMethod === 'razorpay'}
+                        onChange={() => setPaymentMethod('razorpay')}
+                        className="w-4 h-4 text-primary-600"
+                      />
+                    </div>
+                    <p className="text-2xl font-bold text-primary-600 mb-1">₹50 INR</p>
+                    <p className="text-sm text-gray-600">UPI, Cards, Wallets</p>
+                  </div>
+
+                  {/* Solana Option */}
+                  <div
+                    onClick={() => setPaymentMethod('solana')}
+                    className={`border-2 rounded-lg p-4 cursor-pointer transition ${
+                      paymentMethod === 'solana'
+                        ? 'border-primary-600 bg-primary-50'
+                        : 'border-gray-300 hover:border-primary-400'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-gray-900">Solana</h4>
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        checked={paymentMethod === 'solana'}
+                        onChange={() => setPaymentMethod('solana')}
+                        className="w-4 h-4 text-primary-600"
+                      />
+                    </div>
+                    <p className="text-2xl font-bold text-primary-600 mb-1">{PLATFORM_FEE} SOL</p>
+                    <p className="text-sm text-gray-600">Phantom Wallet</p>
+                  </div>
+                </div>
+              </div>
+
               <div className="flex space-x-4">
                 <button
                   type="button"
@@ -263,17 +333,28 @@ const CreateJob = () => {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Confirm Payment</h3>
               <div className="bg-gray-50 rounded-lg p-6 mb-6 max-w-md mx-auto">
                 <div className="flex justify-between mb-3">
+                  <span className="text-gray-600">Payment Method:</span>
+                  <span className="font-semibold capitalize">{paymentMethod}</span>
+                </div>
+                <div className="flex justify-between mb-3">
                   <span className="text-gray-600">Platform Fee:</span>
-                  <span className="font-semibold">{PLATFORM_FEE} SOL</span>
+                  <span className="font-semibold">
+                    {paymentMethod === 'razorpay' ? '₹50 INR' : `${PLATFORM_FEE} SOL`}
+                  </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Your Wallet:</span>
-                  <span className="font-mono text-sm">{wallet?.slice(0, 8)}...{wallet?.slice(-6)}</span>
-                </div>
+                {paymentMethod === 'solana' && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Your Wallet:</span>
+                    <span className="font-mono text-sm">{wallet?.slice(0, 8)}...{wallet?.slice(-6)}</span>
+                  </div>
+                )}
               </div>
 
               <p className="text-gray-600 mb-6">
-                Click below to pay the platform fee and publish your job listing
+                {paymentMethod === 'razorpay' 
+                  ? 'Click below to open Razorpay checkout and complete payment'
+                  : 'Click below to pay via Phantom wallet and publish your job listing'
+                }
               </p>
 
               <div className="flex space-x-4 justify-center">
@@ -298,7 +379,7 @@ const CreateJob = () => {
                       Processing...
                     </span>
                   ) : (
-                    `Pay ${PLATFORM_FEE} SOL & Publish`
+                    paymentMethod === 'razorpay' ? 'Pay ₹50 & Publish' : `Pay ${PLATFORM_FEE} SOL & Publish`
                   )}
                 </button>
               </div>

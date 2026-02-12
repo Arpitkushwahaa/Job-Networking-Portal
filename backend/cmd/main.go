@@ -89,6 +89,9 @@ func main() {
 		{
 			payments.POST("/verify", handlers.VerifyPayment)
 			payments.GET("/history", handlers.GetPaymentHistory)
+			// Razorpay routes
+			payments.POST("/razorpay/create-order", handlers.CreateRazorpayOrder)
+			payments.POST("/razorpay/verify", handlers.VerifyRazorpayPayment)
 		}
 
 		// AI routes

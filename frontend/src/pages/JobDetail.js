@@ -11,7 +11,7 @@ const JobDetail = () => {
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
   const [coverLetter, setCoverLetter] = useState('');
-  const [showApplyModal, setShowApplyModal] = useState(false);
+  const [showApplyModal, setShowApplyModal] = useState(false); 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 

@@ -16,6 +16,10 @@ import JobDetail from './pages/JobDetail';
 import CreateJob from './pages/CreateJob';
 import MyJobs from './pages/MyJobs';
 import Applications from './pages/Applications';
+import ContactUs from './pages/ContactUs';
+import TermsAndConditions from './pages/TermsAndConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import RefundPolicy from './pages/RefundPolicy';
 
 // Components
 import PrivateRoute from './components/PrivateRoute';
@@ -34,6 +38,10 @@ function App() {
               <Route path="/" element={<Landing />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/terms" element={<TermsAndConditions />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/refund-policy" element={<RefundPolicy />} />
 
               {/* Protected Routes */}
               <Route path="/dashboard" element={

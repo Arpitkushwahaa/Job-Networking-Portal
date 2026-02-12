@@ -11,9 +11,17 @@ const ShippingPolicy = () => {
           <div className="prose prose-lg max-w-none text-gray-700 space-y-6">
             <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8">
               <h2 className="text-2xl font-semibold text-blue-900 mb-2">Not Applicable</h2>
-              <p className="text-blue-800">
+              <p className="text-blue-800 mb-4">
                 JobNest is a <strong>100% digital platform</strong>. We do not ship any physical products or materials.
               </p>
+              <div className="bg-white rounded-lg p-4 border border-blue-200">
+                <p className="font-semibold text-blue-900 mb-2">Key Information:</p>
+                <ul className="text-blue-800 space-y-1">
+                  <li>• <strong>Shipping Time:</strong> Not Applicable (Digital Service)</li>
+                  <li>• <strong>Delivery Method:</strong> Instant online access</li>
+                  <li>• <strong>Physical Products:</strong> None</li>
+                </ul>
+              </div>
             </div>
 
             <section>

@@ -80,6 +80,14 @@ const RefundPolicy = () => {
 
             <section>
               <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">5. Refund Request Process</h2>
+              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                <p className="font-semibold text-yellow-900">Important Timelines:</p>
+                <ul className="text-yellow-800 mt-2 space-y-1">
+                  <li>• <strong>Request Deadline:</strong> Within 7 days of transaction</li>
+                  <li>• <strong>Investigation:</strong> 3-5 business days</li>
+                  <li>• <strong>Refund Processing:</strong> 9-15 business days (if approved)</li>
+                </ul>
+              </div>
               <p>
                 If you believe you qualify for a refund under the exceptions listed above:
               </p>
@@ -94,8 +102,8 @@ const RefundPolicy = () => {
                     <li>Screenshots or evidence (if applicable)</li>
                   </ul>
                 </li>
-                <li>Our team will investigate within 5-7 business days</li>
-                <li>If approved, refund will be processed within 10-14 business days to the original payment method</li>
+                <li>Our team will investigate within <strong>3-5 business days</strong></li>
+                <li>If approved, refund will be processed within <strong>9-15 business days</strong> to the original payment method</li>
               </ol>
             </section>
 
@@ -103,13 +111,17 @@ const RefundPolicy = () => {
               <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">6. Refund Processing Time</h2>
               <h3 className="text-xl font-semibold text-gray-800 mt-4 mb-2">6.1 Razorpay Payments</h3>
               <ul className="list-disc pl-6 space-y-2">
-                <li>Approved refunds processed within 5-7 business days</li>
-                <li>Credit to your bank account/card may take additional 5-7 business days depending on your bank</li>
+                <li><strong>Investigation Period:</strong> 3-5 business days</li>
+                <li><strong>Refund Processing:</strong> 9-15 business days from approval</li>
+                <li>Credit to your bank account/card may take additional 2-3 business days depending on your bank</li>
+                <li><strong>Total Time:</strong> Up to 20 business days from request submission</li>
               </ul>
 
               <h3 className="text-xl font-semibold text-gray-800 mt-4 mb-2">6.2 Solana Cryptocurrency Payments</h3>
               <ul className="list-disc pl-6 space-y-2">
-                <li>Approved refunds sent to your wallet address within 2-3 business days</li>
+                <li><strong>Investigation Period:</strong> 3-5 business days</li>
+                <li><strong>Refund Processing:</strong> 2-3 business days after approval</li>
+                <li>Approved refunds sent to your wallet address</li>
                 <li>Blockchain confirmation typically instantaneous</li>
                 <li>Transaction fees may be deducted from refund amount</li>
               </ul>

@@ -20,6 +20,7 @@ import ContactUs from './pages/ContactUs';
 import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
+import ShippingPolicy from './pages/ShippingPolicy';
 
 // Components
 import PrivateRoute from './components/PrivateRoute';
@@ -42,6 +43,7 @@ function App() {
               <Route path="/terms" element={<TermsAndConditions />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/refund-policy" element={<RefundPolicy />} />
+              <Route path="/shipping-policy" element={<ShippingPolicy />} />
 
               {/* Protected Routes */}
               <Route path="/dashboard" element={
